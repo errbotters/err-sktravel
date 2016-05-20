@@ -17,7 +17,7 @@ TRAVEL_REGEX = r'(?:mhd|bus|vlak|spoj)\s(?:z|zo)\s([A-Za-z\s]+)' \
 
 
 def split_args_by(args, by):
-    return map(lambda x: x.strip(), args.split(by))
+    return list(map(lambda x: x.strip(), args.split(by)))
 
 
 class Travel(BotPlugin):
