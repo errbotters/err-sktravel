@@ -39,8 +39,7 @@ class Travel(BotPlugin):
                 time = result[0].drives[0].begin_time
             searched[nick] = [dep, dest, time, date]
 
-        out = unicode(out.strip(codecs.BOM_UTF8), 'utf-8')
-        return out.encode('utf-8')
+        return out
 
     def searched_incrementer(self, nick):
         """Adds 1 minute to previous search departure"""
