@@ -1,7 +1,6 @@
 import imhdsk
 import cpsk
 from errbot import re_botcmd, botcmd, BotPlugin
-import codecs
 import datetime
 
 import sys
@@ -17,13 +16,14 @@ TRAVEL_REGEX = r'(?:mhd|bus|vlak|spoj)\s(?:z|zo)\s([A-Za-z\s]+)' \
 
 
 def split_args_by(args, by):
+    """Split string by character <by>."""
     return list(map(lambda x: x.strip(), args.split(by)))
 
 
 class Travel(BotPlugin):
 
     def send_output(self, nick, dep, dest, date, result=None):
-        """Sends output"""
+        """Send output."""
         out = 'Nothing found'
 
         if date == '':
@@ -42,7 +42,7 @@ class Travel(BotPlugin):
         return out
 
     def searched_incrementer(self, nick):
-        """Adds 1 minute to previous search departure"""
+        """Add 1 minute to previous search departure."""
         dep, dest, time, date = searched[nick]
 
         dateobj = datetime.datetime.strptime('{0}-{1}'.format(time,
@@ -68,7 +68,7 @@ class Travel(BotPlugin):
 
     @botcmd
     def mhd(self, msg, args):
-        """Get the next BA MHD from A to B by running !mhd A B"""
+        """Get the next BA MHD from A to B by running !mhd A B."""
         nick = msg.frm.nick
 
         if '-' in args:
@@ -102,7 +102,7 @@ class Travel(BotPlugin):
 
     @re_botcmd(pattern=TRAVEL_REGEX, prefixed=False)
     def line_match(self, msg, match):
-        """Search for mhd in BA or bus/train lines in Slovakia
+        """Search for mhd in BA or bus/train lines in Slovakia.
 
         Examples:
             bus z mlyny na hlst
@@ -149,7 +149,7 @@ class Travel(BotPlugin):
         return self.send_output(msg.frm.nick, f, t, date, result=r)
 
     def get_line(self, msg, args, vehicle):
-        """Searches for bus/train based on given vehicle argument"""
+        """Search for bus/train based on given vehicle argument."""
         nick = msg.frm.nick
 
         if '-' in args:
@@ -179,18 +179,17 @@ class Travel(BotPlugin):
 
     @botcmd
     def bus(self, msg, args):
-        """Search for next bus line from A to B
+        """Search for next bus line from A to B.
 
         Examples:
             !bus BA TO
             !bus Kosice - Bratislava - 19:00 - 20.12.2014
         """
-
         return self.get_line(msg, args, 'bus')
 
     @botcmd
     def vlak(self, msg, args):
-        """Search for next train line from A to B
+        """Search for next train line from A to B.
 
         Examples:
             !vlak Kosice Bratislava
@@ -200,7 +199,7 @@ class Travel(BotPlugin):
 
     @botcmd
     def spoj(self, msg, args):
-        """Search for next means of transportation from A to B
+        """Search for next means of transportation from A to B.
 
         Examples:
             !spoj Kosice Bratislava
